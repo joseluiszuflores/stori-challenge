@@ -1,0 +1,60 @@
+run:
+  deadline: 5m
+  skip-dirs:
+    - vendor
+    - .git
+    - .vscode
+    - mock
+    - localconfig
+    - tests
+
+linters:
+  enable-all: true
+  disable:
+    - gochecknoglobals
+    - dupl
+    - funlen
+    - wsl
+    - misspell
+    - tagliatelle
+    - scopelint
+    - maligned
+    - golint
+    - interfacer
+    - wrapcheck
+    - gci
+    - gofumpt
+    - exhaustivestruct
+
+linters-settings:
+  errcheck:
+    check-blank: true
+  gocyclo:
+    min-complexity: 11
+  maligned:
+    suggest-new: false
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  misspell:
+    locale: US
+  lll:
+    line-length: 120
+  whitespace:
+    multi-if: true   # Enforces newlines (or comments) after every multi-line if statement
+    multi-func: true # Enforces newlines (or comments) after every multi-line function signature
+
+issues:
+  exclude-rules:
+    - linters:
+        - lll
+      source: "^//go:generate "
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - errcheck
+        - bodyclose
+        - gocognit
+        - gocyclo
+        - paralleltest
+        - testpackage
