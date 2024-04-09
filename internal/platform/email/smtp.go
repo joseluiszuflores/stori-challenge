@@ -1,9 +1,10 @@
 package email
 
 import (
+	"os"
+
 	"github.com/go-mail/mail"
 	"github.com/golang/glog"
-	"os"
 )
 
 type SMTPService struct {
@@ -22,23 +23,26 @@ func (s *SMTPService) getTemplate() (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return string(data), nil
 }
 
+// Send is the method that send the email through smtp server.
 func (s *SMTPService) Send(destination, name string) error {
-	m := mail.NewMessage()
-	m.SetHeader("From", s.from)
-	m.SetHeader("To", destination)
-	m.SetAddressHeader("Cc", destination, name)
-	m.SetHeader("Subject", Subject)
+	newMessage := mail.NewMessage()
+	newMessage.SetHeader("From", s.from)
+	newMessage.SetHeader("To", destination)
+	newMessage.SetAddressHeader("Cc", destination, name)
+	newMessage.SetHeader("Subject", Subject)
 	tmpl, err := s.getTemplate()
 	if err != nil {
 		return err
 	}
-	m.SetBody("text/html", tmpl)
+	newMessage.SetBody("text/html", tmpl)
 	d := mail.NewDialer(s.host, s.port, s.username, s.password)
-	if err := d.DialAndSend(m); err != nil {
+	if err := d.DialAndSend(newMessage); err != nil {
 		glog.Errorf("error sending the email [%s]", err)
+
 		return err
 	}
 
