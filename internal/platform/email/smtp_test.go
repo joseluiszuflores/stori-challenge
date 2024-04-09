@@ -3,7 +3,10 @@
 
 package email
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestSMTPService_Send(t *testing.T) {
 	type fields struct {
@@ -29,7 +32,7 @@ func TestSMTPService_Send(t *testing.T) {
 				host:     "smtp.gmail.com",
 				port:     587,
 				username: "joseluiszuflores@gmail.com",
-				password: "awfa huwg avfs gwoa",
+				password: os.Getenv("psswd_email"),
 				from:     "joseluiszuflores@gmail.com",
 			},
 			args: args{
