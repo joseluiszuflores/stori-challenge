@@ -1,8 +1,9 @@
 package migration
 
 import (
-	"github.com/google/uuid"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Transaction struct {
