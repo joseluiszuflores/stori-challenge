@@ -2,9 +2,10 @@ package email
 
 import (
 	"bytes"
-	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 	"os"
 	"text/template"
+
+	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 
 	"github.com/go-mail/mail"
 	"github.com/golang/glog"
@@ -42,7 +43,7 @@ func (s *SMTPService) Send(destination, name string, balance mooc.Balance) error
 	if err != nil {
 		return err
 	}
-	t := template.Must(template.New("email").Parse(tmpl))
+	tmplate := template.Must(template.New("email").Parse(tmpl))
 	realValues := map[string]interface{}{
 		"Name":                name,
 		"Balance":             balance.Total,
@@ -53,7 +54,7 @@ func (s *SMTPService) Send(destination, name string, balance mooc.Balance) error
 	// buffer for new replaced string
 	var strBuffer bytes.Buffer
 	// replace the values
-	err = t.Execute(&strBuffer, realValues)
+	err = tmplate.Execute(&strBuffer, realValues)
 	if err != nil {
 		return err
 	}
