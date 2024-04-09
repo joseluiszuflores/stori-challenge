@@ -117,7 +117,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
         <v:fill type="frame" src="https://cdn.templates.unlayer.com/assets/1712173422382-bg.png" /><v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
       <![endif]-->
   
-<div class="u-row-container" style="padding: 0px;background-image: url('images/image-6.png');background-repeat: no-repeat;background-position: center top;background-color: transparent">
+<div class="u-row-container" style="padding: 0px;background-image: url('https://firebasestorage.googleapis.com/v0/b/stori-3347e.appspot.com/o/image-6.png?alt=media&token=1954a63e-d069-4e8d-8724-33ca8377b50a');background-repeat: no-repeat;background-position: center top;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-image: url('images/image-6.png');background-repeat: no-repeat;background-position: center top;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: transparent;"><![endif]-->
@@ -175,15 +175,16 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 43px;font-family:'Raleway',sans-serif;" align="left">
         
   <div class="v-text-align v-font-size" style="font-size: 14px; line-height: 160%; text-align: left; word-wrap: break-word;">
-    <p style="line-height: 160%;">Dear [Name],</p>
+    <p style="line-height: 160%;">Dear {{.Name}},</p>
 
 
 <ol>
-<li style="line-height: 22.4px;">Total balance is 39.74.</li>
-<li style="line-height: 22.4px;">Number of transactions in July: 2</li>
-<li style="line-height: 22.4px;">Number of transactions in August: 2</li>
-<li style="line-height: 22.4px;">Average debit amount: -15.38</li>
-<li style="line-height: 22.4px;">Average credit amount: 35.25</li>
+<li style="line-height: 22.4px;">Total balance is {{.Balance}}</li>
+{{ range  $index, $element := .TransactionByMonth}}
+  <li style="line-height: 22.4px;">Number of transactions in {{$index}}: {{$element}}</li>
+{{end}}
+<li style="line-height: 22.4px;">Average debit amount: {{.AverageDebitMount}}</li>
+<li style="line-height: 22.4px;">Average credit amount: {{.AverageCreditAmount}}</li>
 
 </ol>
 <p style="line-height: 160%;"></p>
