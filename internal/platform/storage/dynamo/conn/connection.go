@@ -21,18 +21,22 @@ func NewAWSConfig() (aws.Config, error) {
 		"",
 	))
 	// Create a custom endpoint resolver function
-	endpointResolver := aws.EndpointResolverWithOptionsFunc(func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-		return aws.Endpoint{
-			URL:           "http://localhost:8000",
-			SigningRegion: region,
-		}, nil
-	})
+	endpointResolver := aws.EndpointResolverWithOptionsFunc(
+		//nolint: revive
+		func(service, region string, options ...interface{}) (aws.Endpoint, error) {
+			//nolint:exhaustruct
+			return aws.Endpoint{
+				URL:           "http://localhost:8000",
+				SigningRegion: region,
+			}, nil
+		})
 
 	conf, err := config.LoadDefaultConfig(
 		context.TODO(),
 		config.WithRegion(awsRegion),
 		config.WithEndpointResolverWithOptions(endpointResolver),
 		config.WithCredentialsProvider(credentials.StaticCredentialsProvider{
+			//nolint:exhaustruct
 			Value: aws.Credentials{
 				AccessKeyID: "dummy", SecretAccessKey: "dummy", SessionToken: "dummy",
 				Source: "Hard-coded credentials; values are irrelevant for local DynamoDB",

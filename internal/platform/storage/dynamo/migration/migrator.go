@@ -3,6 +3,7 @@ package migration
 import (
 	"context"
 	"errors"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
@@ -18,7 +19,7 @@ var (
 )
 
 // Migrator will create and  check if the tablas for the system are exist.
-// in case that these are not exist  migrator will send the instructions to  create it
+// in case that these are not exist  migrator will send the instructions to  create it.
 type Migrator struct {
 	client *dynamodb.Client
 }
@@ -60,8 +61,8 @@ const (
 	tableTransaction = "transaction"
 )
 
-// TODO: you need to add any other attributes to items, you add those on item insert, not table creation.
-// TODO: DynamoDB only really cares about and enforces the primary key.
+// you need to add any other attributes to items, you add those on item insert, not table creation.
+// DynamoDB only really cares about and enforces the primary key.
 func (m *Migrator) CreateClientTable() (*dynamodb.CreateTableOutput, error) {
 	des, err := m.DescribeTable(tableClients)
 	if err != nil && !validationErrorNotFoundTable(err) {
@@ -69,9 +70,11 @@ func (m *Migrator) CreateClientTable() (*dynamodb.CreateTableOutput, error) {
 	}
 	// the table should be to exist.
 	if des != nil {
+		//nolint: exhaustruct
 		return &dynamodb.CreateTableOutput{}, nil
 	}
 	// create client table
+	//nolint: exhaustruct
 	table, err := m.client.CreateTable(context.TODO(), &dynamodb.CreateTableInput{
 		TableName: aws.String(tableClients),
 		// primary key attributes are required
@@ -133,6 +136,7 @@ func (m *Migrator) CreateTransactionTable() (*dynamodb.CreateTableOutput, error)
 		return &dynamodb.CreateTableOutput{}, nil
 	}
 	// create client table.
+	//nolint: exhaustruct
 	table, err := m.client.CreateTable(context.TODO(), &dynamodb.CreateTableInput{
 		TableName: aws.String(tableTransaction),
 		// primary key attributes are required.
