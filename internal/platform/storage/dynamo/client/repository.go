@@ -16,10 +16,6 @@ type Repository struct {
 	client *dynamodb.Client
 }
 
-type userDTO struct {
-	ID int
-}
-
 func (r *Repository) GetClient(ctx context.Context, id int) (*mooc.User, error) {
 	data := make(map[string]types.AttributeValue)
 	data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", id)}

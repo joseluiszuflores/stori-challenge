@@ -1,11 +1,39 @@
 package transaction
 
-import mooc "github.com/joseluiszuflores/stori-challenge/internal"
+import (
+	"context"
+	mooc "github.com/joseluiszuflores/stori-challenge/internal"
+)
 
 type Service struct {
+	idUser       int
 	transactions mooc.Transactions
 	debit        mooc.Transactions
 	credit       mooc.Transactions
+	email        mooc.EmailService
+	userRep      mooc.RepositoryUser
+	transRep     mooc.RepositoryTransaction
+}
+
+func (s *Service) SummaryTransaction(ctx context.Context) error {
+	usr, err := s.userRep.GetClient(ctx, s.idUser)
+	if err != nil {
+		return err
+	}
+
+	s.SeparatedDebitCredit()
+	balance := mooc.Balance{
+		Total:               s.transactions.Sum(),
+		AverageDebitAmount:  s.AverageDebit(),
+		AverageCreditAmount: s.AverageCredit(),
+		TransactionByMonth:  s.MovementsByMonth(),
+	}
+
+	if err := s.email.Send(usr.Email, usr.Name, balance); err != nil {
+		return err
+	}
+
+	if err := s.transRep.SaveTransaction(ctx, )
 }
 
 func (s *Service) SeparatedDebitCredit() {
@@ -26,14 +54,14 @@ func (s *Service) AverageCredit() float64 {
 	return s.credit.Sum() / float64(len(s.credit))
 }
 
-func (s *Service) MovementsByMonth() map[int]int {
-	months := make(map[int]int)
+func (s *Service) MovementsByMonth() map[string]int {
+	months := make(map[string]int)
 	for _, transaction := range s.transactions {
-		_, ok := months[int(transaction.Date.Month())]
+		_, ok := months[mooc.Months[int(transaction.Date.Month())]]
 		if ok {
-			months[int(transaction.Date.Month())]++
+			months[mooc.Months[int(transaction.Date.Month())]]++
 		} else {
-			months[int(transaction.Date.Month())] = 1
+			months[mooc.Months[int(transaction.Date.Month())]] = 1
 		}
 	}
 

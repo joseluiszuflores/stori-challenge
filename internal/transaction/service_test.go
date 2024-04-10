@@ -118,14 +118,14 @@ func TestService_MovementsByMonth(t *testing.T) {
 	tests := []struct {
 		name   string
 		fields fields
-		want   map[int]int
+		want   map[string]int
 	}{
 		{
 			name: "Success get the number of movements by month",
 			fields: fields{
 				transactions: allTrans,
 			},
-			want: map[int]int{7: 2, 6: 2},
+			want: map[string]int{"July": 2, "June": 2},
 		},
 	}
 	for _, tt := range tests {
