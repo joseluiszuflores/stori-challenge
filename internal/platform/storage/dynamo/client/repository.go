@@ -2,10 +2,11 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/google/uuid"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 )
 
@@ -16,17 +17,15 @@ type Repository struct {
 }
 
 type userDTO struct {
-	ID uuid.UUID
+	ID int
 }
 
-func (r *Repository) GetClient(ctx context.Context, id uuid.UUID) (*mooc.User, error) {
-	userToGet, err := attributevalue.MarshalMap(userDTO{ID: id})
-	if err != nil {
-		return nil, err
-	}
+func (r *Repository) GetClient(ctx context.Context, id int) (*mooc.User, error) {
+	data := make(map[string]types.AttributeValue)
+	data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", id)}
 
 	input := &dynamodb.GetItemInput{
-		Key:       userToGet,
+		Key:       data,
 		TableName: aws.String(tableNameUserDynamo),
 	}
 	item, err := r.client.GetItem(ctx, input)

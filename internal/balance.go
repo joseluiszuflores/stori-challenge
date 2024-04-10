@@ -2,7 +2,6 @@ package internal
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -20,7 +19,7 @@ type Transaction struct {
 }
 
 type User struct {
-	ID    uuid.UUID
+	ID    int
 	Name  string
 	Email string
 }
