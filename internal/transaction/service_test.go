@@ -3,7 +3,9 @@ package transaction
 import (
 	"context"
 	"fmt"
+	"github.com/golang/mock/gomock"
 	"github.com/joseluiszuflores/stori-challenge/internal"
+	"github.com/joseluiszuflores/stori-challenge/internal/mocks"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -267,31 +269,66 @@ func TestService_SummaryTransaction(t *testing.T) {
 			fields: fields{
 				idUser:       1,
 				transactions: transactions,
-				email:        nil,
-				userRep:      nil,
-				transRep:     nil,
+				email:        helperEmailServiceMock(t),
+				userRep:      helperUserRepositoryMock(t),
+				transRep:     helperTransRepositoryMock(t),
 			},
-			args:    args{},
-			wantErr: nil,
+			args: args{
+				ctx: context.TODO(),
+			},
+			wantErr: assert.NoError,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Service{
-				idUser:       tt.fields.idUser,
-				transactions: tt.fields.transactions,
-				debit:        tt.fields.debit,
-				credit:       tt.fields.credit,
-				email:        tt.fields.email,
-				userRep:      tt.fields.userRep,
-				transRep:     tt.fields.transRep,
-			}
+			s := NewService(
+				tt.fields.idUser,
+				tt.fields.transactions,
+				tt.fields.debit,
+				tt.fields.credit,
+				tt.fields.email,
+				tt.fields.userRep,
+				tt.fields.transRep,
+			)
 			tt.wantErr(t, s.SummaryTransaction(tt.args.ctx), fmt.Sprintf("SummaryTransaction(%v)", tt.args.ctx))
 		})
 	}
 }
 
+func helperEmailServiceMock(t *testing.T) internal.EmailService {
+	t.Helper()
+	cnt := gomock.NewController(t)
+	email := mocks.NewMockEmailService(cnt)
+	email.EXPECT().Send(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+
+	return email
+}
+
+func helperUserRepositoryMock(t *testing.T) internal.RepositoryUser {
+	t.Helper()
+	cnt := gomock.NewController(t)
+
+	usrRep := mocks.NewMockRepositoryUser(cnt)
+	usrRep.EXPECT().GetClient(gomock.Any(), gomock.Any()).Return(&internal.User{
+		ID:    0,
+		Name:  "Jose",
+		Email: "storymockexample@gmail.com",
+	}, nil)
+
+	return usrRep
+}
+
+func helperTransRepositoryMock(t *testing.T) internal.RepositoryTransaction {
+	t.Helper()
+	cnt := gomock.NewController(t)
+	transRepo := mocks.NewMockRepositoryTransaction(cnt)
+	transRepo.EXPECT().SaveTransactions(gomock.Any(), gomock.Any()).Return(nil)
+
+	return transRepo
+}
+
 func helperTransactions(t *testing.T) internal.Transactions {
+	t.Helper()
 	transactionsArr := make([]internal.Transaction, 0)
 	transactionsArr = append(transactionsArr, internal.Transaction{
 		ID:          1,
