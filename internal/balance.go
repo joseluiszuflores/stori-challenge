@@ -16,3 +16,12 @@ type Transaction struct {
 }
 
 type Transactions []Transaction
+
+func (t Transactions) Sum() float64 {
+	sum := 0.0
+	for _, val := range t {
+		sum += val.Transaction
+	}
+
+	return sum
+}
