@@ -1,6 +1,10 @@
 package internal
 
-import "time"
+import (
+	"context"
+	"github.com/google/uuid"
+	"time"
+)
 
 type Balance struct {
 	Total               float64
@@ -15,6 +19,12 @@ type Transaction struct {
 	Transaction float64
 }
 
+type User struct {
+	ID    uuid.UUID
+	Name  string
+	Email string
+}
+
 type Transactions []Transaction
 
 func (t Transactions) Sum() float64 {
@@ -24,4 +34,8 @@ func (t Transactions) Sum() float64 {
 	}
 
 	return sum
+}
+
+type RepositoryTransaction interface {
+	SaveTransaction(ctx context.Context, transaction Transaction) error
 }

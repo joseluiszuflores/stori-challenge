@@ -29,6 +29,7 @@ func NewMigrator(client *dynamodb.Client) *Migrator {
 }
 
 func (m *Migrator) Do() error {
+	glog.Info("Doing migration")
 	if out, err := m.CreateClientTable(); err != nil || out == nil {
 		glog.Error(err)
 
@@ -57,7 +58,7 @@ func (m *Migrator) DescribeTable(tableName string) (*dynamodb.DescribeTableOutpu
 }
 
 const (
-	tableClients     = "client"
+	tableClients     = "user"
 	tableTransaction = "transaction"
 )
 
