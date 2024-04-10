@@ -29,6 +29,7 @@ func NewMigrator(client *dynamodb.Client) *Migrator {
 }
 
 func (m *Migrator) Do() error {
+	glog.Info("Doing migration")
 	if out, err := m.CreateClientTable(); err != nil || out == nil {
 		glog.Error(err)
 
@@ -57,7 +58,7 @@ func (m *Migrator) DescribeTable(tableName string) (*dynamodb.DescribeTableOutpu
 }
 
 const (
-	tableClients     = "client"
+	tableClients     = "user"
 	tableTransaction = "transaction"
 )
 
@@ -83,19 +84,12 @@ func (m *Migrator) CreateClientTable() (*dynamodb.CreateTableOutput, error) {
 				AttributeName: aws.String("id"),
 				AttributeType: types.ScalarAttributeTypeN,
 			},
-			{
-				AttributeName: aws.String("email"),
-				AttributeType: types.ScalarAttributeTypeS,
-			},
 		},
 		// add primary key details
 		KeySchema: []types.KeySchemaElement{
 			{
 				AttributeName: aws.String("id"),
 				KeyType:       types.KeyTypeHash,
-			}, {
-				AttributeName: aws.String("email"),
-				KeyType:       types.KeyTypeRange,
 			},
 		},
 		// set billing mode
