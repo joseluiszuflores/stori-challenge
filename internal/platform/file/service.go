@@ -2,12 +2,13 @@ package file
 
 import (
 	"fmt"
-	"github.com/golang/glog"
-	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/golang/glog"
+	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 
 	"github.com/gocarina/gocsv"
 )
@@ -38,20 +39,22 @@ func (s *Service) GetDataFile() (mooc.Transactions, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return toMoocTransactions(tns), nil
 }
 
 func toMoocTransactions(ts transactions) mooc.Transactions {
 	mctrns := make(mooc.Transactions, 0)
 	for _, val := range ts {
-		tm, err := time.Parse(time.DateOnly, val.Date.DateWithYear())
+		newTimeParse, err := time.Parse(time.DateOnly, val.Date.DateWithYear())
 		if err != nil {
 			glog.Errorf("Error trying to add the date to [%v] [%s]", val, err)
+
 			continue
 		}
 		mctrns = append(mctrns, mooc.Transaction{
 			ID:          val.Id,
-			Date:        tm,
+			Date:        newTimeParse,
 			Transaction: val.Transaction,
 		})
 	}
@@ -70,6 +73,7 @@ func (d dateCSV) Day() int {
 	if err != nil {
 		return 1
 	}
+
 	return dayInt
 }
 
@@ -82,6 +86,7 @@ func (d dateCSV) Month() int {
 	if err != nil {
 		return 1
 	}
+
 	return mothInt
 }
 
