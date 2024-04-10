@@ -28,12 +28,12 @@ func (s *Service) AverageCredit() float64 {
 
 func (s *Service) MovementsByMonth() map[int]int {
 	months := make(map[int]int)
-	for _, trasaction := range s.transactions {
-		_, ok := months[int(trasaction.Date.Month())]
+	for _, transaction := range s.transactions {
+		_, ok := months[int(transaction.Date.Month())]
 		if ok {
-			months[int(trasaction.Date.Month())]++
+			months[int(transaction.Date.Month())]++
 		} else {
-			months[int(trasaction.Date.Month())] = 1
+			months[int(transaction.Date.Month())] = 1
 		}
 	}
 
