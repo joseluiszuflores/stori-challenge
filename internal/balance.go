@@ -36,6 +36,8 @@ func (t Transactions) Sum() float64 {
 	return sum
 }
 
+//go:generate mockgen -destination=./mocks/transaction_mock.go -package=mocks -source=./balance.go RepositoryTransaction
+
 type RepositoryTransaction interface {
 	SaveTransaction(ctx context.Context, transaction Transaction) error
 }

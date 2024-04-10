@@ -12,6 +12,7 @@ require (
 	github.com/go-mail/mail v2.3.1+incompatible
 	github.com/gocarina/gocsv v0.0.0-20231116093920-b87c2d0e983a
 	github.com/golang/glog v1.2.1
+	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.9.0
 )
