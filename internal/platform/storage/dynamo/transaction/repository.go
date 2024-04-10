@@ -33,7 +33,7 @@ func (r *Repository) SaveTransaction(ctx context.Context, transaction mooc.Trans
 	return nil
 }
 
-// SaveTransactions saves the transactions.
+// SaveTransactions saves the transactions into a transaction DB (TX).
 func (r *Repository) SaveTransactions(ctx context.Context, transaction mooc.Transactions) error {
 	transactionDB := make([]types.TransactWriteItem, 0)
 	for _, trans := range transaction {

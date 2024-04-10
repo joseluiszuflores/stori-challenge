@@ -15,6 +15,10 @@ type Service struct {
 	transRep     mooc.RepositoryTransaction
 }
 
+func NewService(idUser int, transactions mooc.Transactions, debit mooc.Transactions, credit mooc.Transactions, email mooc.EmailService, userRep mooc.RepositoryUser, transRep mooc.RepositoryTransaction) *Service {
+	return &Service{idUser: idUser, transactions: transactions, debit: debit, credit: credit, email: email, userRep: userRep, transRep: transRep}
+}
+
 func (s *Service) SummaryTransaction(ctx context.Context) error {
 	usr, err := s.userRep.GetClient(ctx, s.idUser)
 	if err != nil {
@@ -33,7 +37,11 @@ func (s *Service) SummaryTransaction(ctx context.Context) error {
 		return err
 	}
 
-	if err := s.transRep.SaveTransaction(ctx, )
+	if err := s.transRep.SaveTransactions(ctx, s.transactions); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *Service) SeparatedDebitCredit() {
