@@ -40,3 +40,8 @@ func (t Transactions) Sum() float64 {
 type RepositoryTransaction interface {
 	SaveTransaction(ctx context.Context, transaction Transaction) error
 }
+
+//go:generate mockgen -destination=./mocks/email_mock.go -package=mocks -source=./balance.go EmailService
+type EmailService interface {
+	Send(destination, name string, balance Balance) error
+}
