@@ -14,6 +14,7 @@ import (
 )
 
 type transaction struct {
+	//nolint: revive,stylecheck
 	Id          int
 	Date        dateCSV
 	Transaction float64
@@ -66,7 +67,7 @@ const separator = "/"
 
 func (d dateCSV) Day() int {
 	content := strings.Split(string(d), separator)
-	if len(content) < 2 {
+	if len(content) < lengthOfTimeIntoStruct {
 		return 1
 	}
 	dayInt, err := strconv.Atoi(content[1])
@@ -77,9 +78,11 @@ func (d dateCSV) Day() int {
 	return dayInt
 }
 
+const lengthOfTimeIntoStruct = 2
+
 func (d dateCSV) Month() int {
 	content := strings.Split(string(d), separator)
-	if len(content) < 2 {
+	if len(content) < lengthOfTimeIntoStruct {
 		return 1
 	}
 	mothInt, err := strconv.Atoi(content[0])
