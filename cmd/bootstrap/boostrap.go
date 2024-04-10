@@ -20,7 +20,7 @@ func Run() error {
 	db := conn.NewDynamoDBClient(cnf)
 	// Instance of migrator to does the migration.
 	m := migration.NewMigrator(db)
-	// does migration of client.
+	// does migration of client table and created transaction table.
 	if err := m.Do(); err != nil {
 		glog.Errorf("error migrating: [%s]", err)
 
