@@ -9,24 +9,42 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-func NewAWSConfig() (aws.Config, error) {
-	// get config from environment variables
-	awsAccessKey := "any"
-	awsSecretAccessKey := "any"
-	awsRegion := "us-east-1"
+func NewAWSConfig(awsAccessKey, awsSecretAccessKey, awsRegion, urlDevAWSDynamo string, devEnv bool) (aws.Config, error) {
 	// setup aws credential provider
-	_ = aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(
+	cred := aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(
 		awsAccessKey,
 		awsSecretAccessKey,
 		"",
 	))
+	if devEnv {
+		return devAWSConf(awsRegion, urlDevAWSDynamo)
+	}
+
+	conf, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithRegion(awsRegion),
+		config.WithCredentialsProvider(cred),
+	)
+	if err != nil {
+		return aws.Config{}, err
+	}
+
+	return conf, nil
+}
+
+func NewDynamoDBClient(sdkConfig aws.Config) *dynamodb.Client {
+	// initialize new dynamodb client from aws config and return it
+	return dynamodb.NewFromConfig(sdkConfig)
+}
+
+func devAWSConf(awsRegion, urlDevAWSDynamo string) (aws.Config, error) {
 	// Create a custom endpoint resolver function
 	endpointResolver := aws.EndpointResolverWithOptionsFunc(
 		//nolint: revive
 		func(service, region string, options ...interface{}) (aws.Endpoint, error) {
 			//nolint:exhaustruct
 			return aws.Endpoint{
-				URL:           "http://localhost:8000",
+				URL:           urlDevAWSDynamo,
 				SigningRegion: region,
 			}, nil
 		})
@@ -48,9 +66,4 @@ func NewAWSConfig() (aws.Config, error) {
 	}
 
 	return conf, nil
-}
-
-func NewDynamoDBClient(sdkConfig aws.Config) *dynamodb.Client {
-	// initialize new dynamodb client from aws config and return it
-	return dynamodb.NewFromConfig(sdkConfig)
 }

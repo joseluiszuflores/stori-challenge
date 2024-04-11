@@ -39,20 +39,20 @@ func (t Transactions) Sum() float64 {
 	return sum
 }
 
-//go:generate mockgen -destination=./mocks/transaction_mock.go -package=mocks -source=./balance.go RepositoryTransaction
+//go:generate mockgen -destination=./mocks/mock.go -package=mocks -source=./balance.go RepositoryTransaction
 
 type RepositoryTransaction interface {
 	SaveTransaction(ctx context.Context, transaction Transaction) error
 	SaveTransactions(ctx context.Context, transaction Transactions) error
 }
 
-//go:generate mockgen -destination=./mocks/user_mock.go -package=mocks -source=./balance.go RepositoryUser
+//go:generate mockgen -destination=./mocks/mock.go -package=mocks -source=./balance.go RepositoryUser
 
 type RepositoryUser interface {
 	GetClient(ctx context.Context, id int) (*User, error)
 }
 
-//go:generate mockgen -destination=./mocks/email_mock.go -package=mocks -source=./balance.go EmailService
+//go:generate mockgen -destination=./mocks/mock.go -package=mocks -source=./balance.go EmailService
 
 type EmailService interface {
 	Send(destination, name string, balance Balance) error

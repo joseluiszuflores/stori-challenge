@@ -23,8 +23,11 @@ func Run(path, userId string) error {
 		return err
 	}
 	config.Init()
+	key, secret := config.Config.AWSAccessKey, config.Config.AWSSecretAcessKey
+	region, url := config.Config.AWSRegion, config.Config.AWSUrlDynamoDev
+
 	// new configuration of AWS data.
-	cnf, err := conn.NewAWSConfig()
+	cnf, err := conn.NewAWSConfig(key, secret, region, url, config.Config.DevEnv)
 	if err != nil {
 		glog.Errorf("error loading the configuration of aws: [%s]", err)
 
