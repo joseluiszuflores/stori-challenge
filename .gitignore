@@ -19,10 +19,9 @@
 
 recursos
 
-*.jpg
 *.pdf
 *.zip
-*.png
+
 
 .DS_Store
 
