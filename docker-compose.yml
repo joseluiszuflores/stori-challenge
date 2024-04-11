@@ -1,0 +1,30 @@
+version: '3'
+services:
+  dynamodb_dev:
+    restart: always
+    image: amazon/dynamodb-local
+    container_name: dynamodb_dev
+    networks:
+      stori_dev:
+        aliases:
+          - dynamodb_dev
+    ports:
+      - 8000:8000
+
+  stori_cmd_dev:
+    restart: always
+    env_file:
+      - stori.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stori_cmd_dev
+    depends_on:
+      - dynamodb_dev
+    networks:
+      stori_dev:
+        aliases:
+          - stori_cmd_dev
+
+networks:
+  stori_dev:
