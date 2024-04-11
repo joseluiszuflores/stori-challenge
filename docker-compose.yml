@@ -9,7 +9,7 @@ services:
         aliases:
           - dynamodb_dev
     ports:
-      - 8000:8000
+      - "8000:8000"
 
   stori_cmd_dev:
     restart: always
@@ -19,6 +19,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: stori_cmd_dev
+    command: ./main evaluate --path=example.csv --user=1
     depends_on:
       - dynamodb_dev
     networks:
