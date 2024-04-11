@@ -20,6 +20,10 @@ type SMTPService struct {
 	templatePath string
 }
 
+func NewSMTPService(host string, port int, username string, password string, from string, templatePath string) *SMTPService {
+	return &SMTPService{host: host, port: port, username: username, password: password, from: from, templatePath: templatePath}
+}
+
 const Subject = "Total Balance"
 
 // getTemplate reads the content of the template.
@@ -41,6 +45,7 @@ func (s *SMTPService) Send(destination, name string, balance mooc.Balance) error
 	newMessage.SetHeader("Subject", Subject)
 	tmpl, err := s.getTemplate()
 	if err != nil {
+		glog.Error("error getting the template for email - ", err)
 		return err
 	}
 	tmplate := template.Must(template.New("email").Parse(tmpl))

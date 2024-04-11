@@ -28,6 +28,10 @@ type Service struct {
 	pathCSV string
 }
 
+func NewService(pathCSV string) *Service {
+	return &Service{pathCSV: pathCSV}
+}
+
 func (s *Service) GetDataFile() (mooc.Transactions, error) {
 	file, err := os.Open(s.pathCSV)
 	if err != nil {
@@ -98,5 +102,14 @@ func (d dateCSV) Year() int {
 }
 
 func (d dateCSV) DateWithYear() string {
-	return fmt.Sprintf("%d-0%d-%d", d.Year(), d.Month(), d.Day())
+	month := fmt.Sprintf("%d", d.Month())
+	if d.Month() < 10 {
+		month = fmt.Sprintf("0%d", d.Month())
+	}
+	day := fmt.Sprintf("%d", d.Day())
+	if d.Day() < 10 {
+		day = fmt.Sprintf("0%d", d.Day())
+	}
+
+	return fmt.Sprintf("%d-%s-%s", d.Year(), month, day)
 }

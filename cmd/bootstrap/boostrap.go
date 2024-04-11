@@ -1,13 +1,28 @@
 package bootstrap
 
 import (
+	"context"
 	"github.com/golang/glog"
+	"github.com/joseluiszuflores/stori-challenge/internal/config"
+	"github.com/joseluiszuflores/stori-challenge/internal/platform/email"
+	"github.com/joseluiszuflores/stori-challenge/internal/platform/file"
+	"github.com/joseluiszuflores/stori-challenge/internal/platform/storage/dynamo/client"
 	"github.com/joseluiszuflores/stori-challenge/internal/platform/storage/dynamo/conn"
 	"github.com/joseluiszuflores/stori-challenge/internal/platform/storage/dynamo/migration"
+	transaction2 "github.com/joseluiszuflores/stori-challenge/internal/platform/storage/dynamo/transaction"
+	"github.com/joseluiszuflores/stori-challenge/internal/transaction"
 )
 
 // Run call all configurations and connections to DB.
-func Run() error {
+func Run(path, userId string) error {
+	fileService := file.NewService(path)
+	transactions, err := fileService.GetDataFile()
+	if err != nil {
+		glog.Error(err)
+
+		return err
+	}
+	config.Init()
 	// new configuration of AWS data.
 	cnf, err := conn.NewAWSConfig()
 	if err != nil {
@@ -26,6 +41,17 @@ func Run() error {
 
 		return err
 	}
+	smtp := email.NewSMTPService(config.Config.SMTPHost, config.Config.SMTPPort, config.Config.SMTPUsername, config.Config.SMTPPassword, config.Config.SMTPUsername, config.Config.SMTPTemplatePath)
 
+	clientRep := client.NewRepository(db)
+	transactionRep := transaction2.NewRepository(db)
+
+	service, err := transaction.NewService(userId, transactions, smtp, clientRep, transactionRep)
+	if err != nil {
+		return err
+	}
+	if err := service.SummaryTransaction(context.TODO()); err != nil {
+		return err
+	}
 	return nil
 }

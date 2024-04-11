@@ -16,6 +16,10 @@ type Repository struct {
 	client *dynamodb.Client
 }
 
+func NewRepository(client *dynamodb.Client) *Repository {
+	return &Repository{client: client}
+}
+
 func (r *Repository) GetClient(ctx context.Context, id int) (*mooc.User, error) {
 	data := make(map[string]types.AttributeValue)
 	data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", id)}
