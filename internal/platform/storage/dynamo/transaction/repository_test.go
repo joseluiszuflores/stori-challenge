@@ -1,3 +1,6 @@
+//go:build integration
+// +build integration
+
 package transaction
 
 import (
@@ -22,7 +25,7 @@ func TestRepository_SaveTransaction(t *testing.T) {
 		ctx         context.Context
 		transaction internal.Transaction
 	}
-	conf, err := conn.NewAWSConfig()
+	conf, err := conn.NewAWSConfig("", "", "us-east-1", "http://localhost:8000", true)
 	if err != nil {
 		assert.NoError(t, err)
 
@@ -84,7 +87,7 @@ func TestRepository_SaveTransactions(t *testing.T) {
 	type fields struct {
 		client *dynamodb.Client
 	}
-	conf, err := conn.NewAWSConfig()
+	conf, err := conn.NewAWSConfig("", "", "us-east-1", "http://localhost:8000", true)
 	if err != nil {
 		assert.NoError(t, err)
 

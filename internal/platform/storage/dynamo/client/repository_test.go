@@ -24,7 +24,7 @@ func TestRepository_GetClient(t *testing.T) {
 		ctx context.Context
 		id  int
 	}
-	conf, err := conn.NewAWSConfig()
+	conf, err := conn.NewAWSConfig("", "", "us-east-1", "http://localhost:8000", true)
 	if err != nil {
 		assert.NoError(t, err)
 
