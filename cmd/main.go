@@ -34,6 +34,8 @@ and the average credit and average debit amounts grouped by month. `,
 
 				os.Exit(-1)
 			}
+
+			fmt.Print("Success sending the email with the information")
 		},
 	}
 	cmdEvaluate.Flags().String("path", "", "is the path of file csv")
