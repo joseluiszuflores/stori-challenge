@@ -15,8 +15,12 @@ type Service struct {
 	transRep     mooc.RepositoryTransaction
 }
 
-func NewService(idUser int, transactions mooc.Transactions, debit mooc.Transactions, credit mooc.Transactions, email mooc.EmailService, userRep mooc.RepositoryUser, transRep mooc.RepositoryTransaction) *Service {
-	return &Service{idUser: idUser, transactions: transactions, debit: debit, credit: credit, email: email, userRep: userRep, transRep: transRep}
+func NewService(idUser string, transactions mooc.Transactions, email mooc.EmailService, userRep mooc.RepositoryUser, transRep mooc.RepositoryTransaction) (*Service, error) {
+	id := mooc.ToInt(idUser)
+	if mooc.IsValidInt(id) {
+		return nil, mooc.ErrIDUserIsInvalid
+	}
+	return &Service{idUser: id, transactions: transactions, email: email, userRep: userRep, transRep: transRep}, nil
 }
 
 func (s *Service) SummaryTransaction(ctx context.Context) error {

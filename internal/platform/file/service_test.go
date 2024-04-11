@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package file
 
 import (
@@ -60,6 +57,12 @@ func helperFileCSV(t *testing.T) transactions {
 	trans = append(trans, transaction{
 		Id:          2,
 		Date:        "7/28",
+		Transaction: +50.5,
+	})
+
+	trans = append(trans, transaction{
+		Id:          2,
+		Date:        "8/2",
 		Transaction: +50.5,
 	})
 	file2, err := os.Create(filePathTest)

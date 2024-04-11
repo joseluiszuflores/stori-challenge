@@ -2,6 +2,8 @@ package internal
 
 import (
 	"context"
+	"errors"
+	"strconv"
 	"time"
 )
 
@@ -55,3 +57,18 @@ type RepositoryUser interface {
 type EmailService interface {
 	Send(destination, name string, balance Balance) error
 }
+
+func ToInt(val string) int {
+	intVal, err := strconv.Atoi(val)
+	if err != nil {
+		return -1
+	}
+
+	return intVal
+}
+
+func IsValidInt(val int) bool {
+	return val == -1
+}
+
+var ErrIDUserIsInvalid = errors.New("the user id is invalid")

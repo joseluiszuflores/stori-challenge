@@ -15,6 +15,10 @@ type Repository struct {
 	client *dynamodb.Client
 }
 
+func NewRepository(client *dynamodb.Client) *Repository {
+	return &Repository{client: client}
+}
+
 // SaveTransaction saves the data of transaction.
 func (r *Repository) SaveTransaction(ctx context.Context, transaction mooc.Transaction) error {
 	data := make(map[string]types.AttributeValue)
