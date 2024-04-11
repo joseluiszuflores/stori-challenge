@@ -92,7 +92,7 @@ Success sending the email with the information
 
 We already have our email with information  like this.
 
- <img alt="Stori" src="./img/email.png" width="450px" height="500px" />
+ <img alt="Stori" src="./img/email.png" width="450px" height="650px" />
 
 #### Errors Generals
 
@@ -110,26 +110,26 @@ This is the struct of this project
 ├── README.md
 ├── cmd
 │   ├── bootstrap
-│   │   └── boostrap.go
+│   │   └── boostrap.go // we declared and instanced our structs here
 │   └── main.go
-├── docker-compose.yml
-├── example.csv //example of csv that this project used.
+├── docker-compose.yml // For local use only..
+├── example.csv //Example of the csv used by this project
 ├── go.mod
 ├── go.sum
-├── golangci.yml //file of configuration that golang-ci use.
+├── golangci.yml //configuration file  used by golang-ci
 ├── img
 │   ├── Charts.png
 │   └── Stori.png
-├── internal
-│   ├── balance.go
-│   ├── config
+├── internal // golang helps us make sure that this logic can't be accessed by another package.
+│   ├── balance.go // struct definition
+│   ├── config // we used to configor to get our variables.
 │   │   └── config.go
 │   ├── logslevels
 │   │   └── levels.go
 │   ├── mocks
-│   │   └── mock.go
+│   │   └── mock.go //mockery helps us to create dummy  structures that work with our tests.
 │   ├── platform
-│   │   ├── email
+│   │   ├── email 
 │   │   │   ├── smtp.go
 │   │   │   └── smtp_test.go
 │   │   ├── file
@@ -139,7 +139,7 @@ This is the struct of this project
 │   │   └── storage
 │   │       └── dynamo
 │   └── transaction
-│       ├── service.go
+│       ├── service.go // we have all logic about what happen with our transactions.
 │       └── service_test.go
 ├── stori.env
 └── template
@@ -151,7 +151,7 @@ This is the struct of this project
         │   ├── image-4.png
         │   ├── image-5.png
         │   └── image-6.png
-        └── index.html
+        └── index.html // template of email for production we should storage in another place.
 ```
 
 ### ✅ Tests execution
