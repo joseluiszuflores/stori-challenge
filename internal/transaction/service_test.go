@@ -244,7 +244,7 @@ func TestService_AverageCredit(t *testing.T) {
 
 func TestService_SummaryTransaction(t *testing.T) {
 	type fields struct {
-		idUser       int
+		idUser       string
 		transactions internal.Transactions
 		debit        internal.Transactions
 		credit       internal.Transactions
@@ -267,7 +267,7 @@ func TestService_SummaryTransaction(t *testing.T) {
 		{
 			name: "Success getting the information and sent email",
 			fields: fields{
-				idUser:       1,
+				idUser:       "1",
 				transactions: transactions,
 				email:        helperEmailServiceMock(t),
 				userRep:      helperUserRepositoryMock(t),
@@ -281,15 +281,17 @@ func TestService_SummaryTransaction(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewService(
+			s, err := NewService(
 				tt.fields.idUser,
 				tt.fields.transactions,
-				tt.fields.debit,
-				tt.fields.credit,
 				tt.fields.email,
 				tt.fields.userRep,
 				tt.fields.transRep,
 			)
+			if err != nil {
+				assert.NoError(t, err)
+				return
+			}
 			tt.wantErr(t, s.SummaryTransaction(tt.args.ctx), fmt.Sprintf("SummaryTransaction(%v)", tt.args.ctx))
 		})
 	}

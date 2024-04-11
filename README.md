@@ -157,3 +157,22 @@ This is the struct of this project
 ### ✅ Tests execution
 
 1. Install the dependencies if you haven't done it previously: `go mod tidy`
+2. Running these commands.
+
+``` bash
+   $ go test ./... -coverprofile=./c.out && go tool cover -html=./c.out -o ./coverage.html
+   $ go tool cover -func=./c.out
+   
+    github.com/joseluiszuflores/stori-challenge/internal/transaction/service.go:18: NewService              75.0%
+    github.com/joseluiszuflores/stori-challenge/internal/transaction/service.go:26: SummaryTransaction      70.0%
+    github.com/joseluiszuflores/stori-challenge/internal/transaction/service.go:51: SeparatedDebitCredit    100.0%
+    github.com/joseluiszuflores/stori-challenge/internal/transaction/service.go:61: AverageDebit            100.0%
+    github.com/joseluiszuflores/stori-challenge/internal/transaction/service.go:65: AverageCredit           100.0%
+    github.com/joseluiszuflores/stori-challenge/internal/transaction/service.go:69: MovementsByMonth        100.0%
+    total:                                                                          (statements)            85.2%
+
+```
+
+For this project we have 85% of coverage.
+
+> the good thing here is that we can have a index.html with all part that out code don't cover with  our tests
