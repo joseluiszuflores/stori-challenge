@@ -65,12 +65,12 @@ to handler the data and getting  a summary about the debit and credit average.
 2. Install all the dependencies  `go mod tidy`
 
 #### Use
-This system is a script that receive two flags
+This system is a script that needs  two flags
 
-1. path: path where our script found the file csv
-2. user: id of the user where we extract the information like name and email it should be a int value 
+1. path: path where our script found the  csv file
+2. user: id of the user where we extract the information like name and email it should be an int value 
 
-If we execute the script without these flags we will receive:
+If we run the script without these flags we will get:
 
 ``` bash
 $ ./main evaluate
@@ -82,26 +82,25 @@ $ ./main evaluate --path=./example.csv
 The flag user is necessary to sent the email correctly
 ```
 
-To have the correct output we should add these flags, and we take a look something like that
-
+To get the correct output we should add these flags, and we will see something like this
 ``` bash
 $./main evaluate --path="/Users/josezuniga/Code/stori/example.csv" --user=1
 
 Success sending the email with the information
 ```
->  For the correct running we already should have a user with information as such email and name 
+>  For the correct running we should already  have a user with information such as  email and name 
 
-We already have our email with the information like this.
+We already have our email with information  like this.
 
  <img alt="Stori" src="./img/email.png" width="450px" height="500px" />
 
 #### Errors Generals
 
 
-| Error                                                                                                  | Description                                                                                                                        |
-|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| error sending the email [gomail: could not send email 1: gomail: invalid address "": mail: no address] | The user doesn't have an email or doesn't exist this user                                                                          |
-| error migrating: [error to create client/transactions table]                                           | Please check the configuration env as such  `AWS_URL_DYNAMO_DEV` usually this error is related with our credentials above DynamoDB |
+| Error                                                                                                  | Description                                                                                                           |
+|--------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| error sending the email [gomail: could not send email 1: gomail: invalid address "": mail: no address] | The user doesn't have an email or doesn't exist this user                                                             |
+| error migrating: [error to create client/transactions table]                                           | Please check the configuration env `AWS_URL_DYNAMO_DEV` usually this error is related with our DynamoDB's credentials |
 
 This is the struct of this project
 ``` bash
