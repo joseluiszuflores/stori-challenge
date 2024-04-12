@@ -107,6 +107,7 @@ func TestService_MovementsByMonth(t *testing.T) {
 	timeForCredit, err := time.Parse(time.DateOnly, "2024-06-24")
 	if err != nil {
 		assert.NoError(t, err)
+
 		return
 	}
 	credit = append(credit, internal.Transaction{
@@ -159,6 +160,7 @@ func TestService_AverageDebit(t *testing.T) {
 	timeForDebit, err := time.Parse(time.DateOnly, "2024-07-24")
 	if err != nil {
 		assert.NoError(t, err)
+
 		return
 	}
 	debit = append(debit, internal.Transaction{
@@ -208,6 +210,7 @@ func TestService_AverageCredit(t *testing.T) {
 	timeForCredit, err := time.Parse(time.DateOnly, "2024-06-24")
 	if err != nil {
 		assert.NoError(t, err)
+
 		return
 	}
 	credit = append(credit, internal.Transaction{

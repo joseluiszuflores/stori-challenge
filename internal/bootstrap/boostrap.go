@@ -54,7 +54,9 @@ func Setup(transactions mooc.Transactions, userID string) error {
 
 		return err
 	}
-	smtp := email.NewSMTPService(config.Config.SMTPHost, config.Config.SMTPPort, config.Config.SMTPUsername, config.Config.SMTPPassword, config.Config.SMTPUsername, config.Config.SMTPTemplatePath)
+	host, port := config.Config.SMTPHost, config.Config.SMTPPort
+	user, pass := config.Config.SMTPUsername, config.Config.SMTPPassword
+	smtp := email.NewSMTPService(host, port, user, pass, config.Config.SMTPUsername, config.Config.SMTPTemplatePath)
 
 	clientRep := client.NewRepository(db)
 	transactionRep := transaction2.NewRepository(db)
