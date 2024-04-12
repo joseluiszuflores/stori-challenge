@@ -3,6 +3,7 @@ package transaction
 import (
 	"context"
 	"fmt"
+	"github.com/golang/glog"
 	"github.com/golang/mock/gomock"
 	"github.com/joseluiszuflores/stori-challenge/internal"
 	"github.com/joseluiszuflores/stori-challenge/internal/mocks"
@@ -348,4 +349,131 @@ func helperTransactions(t *testing.T) internal.Transactions {
 		Transaction: -11,
 	})
 	return transactionsArr
+}
+
+func TestService_SeparateTransactionByMonth(t *testing.T) {
+	type fields struct {
+		idUser       int
+		transactions internal.Transactions
+		debit        internal.Transactions
+		credit       internal.Transactions
+		email        internal.EmailService
+		userRep      internal.RepositoryUser
+		transRep     internal.RepositoryTransaction
+	}
+	trans := helperTransactions(t)
+	mountsArr := make(map[string]*MountsByMonth)
+	debit := make(mounts, 0)
+	debit = append(debit, -11)
+	credit := make(mounts, 0)
+	credit = append(credit, 90)
+	credit = append(credit, 10)
+	mountsArr["April"] = &MountsByMonth{
+		AverageDebitAmount:  debit,
+		AverageCreditAmount: credit,
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   map[string]*MountsByMonth
+	}{
+		{
+			name: "Success getting transaction by month ",
+			fields: fields{
+				transactions: trans,
+			},
+			want: mountsArr,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := &Service{
+				idUser:       tt.fields.idUser,
+				transactions: tt.fields.transactions,
+				debit:        tt.fields.debit,
+				credit:       tt.fields.credit,
+				email:        tt.fields.email,
+				userRep:      tt.fields.userRep,
+				transRep:     tt.fields.transRep,
+			}
+			//assert.Equalf(t, tt.want, s.SeparateTransactionByMonth(), "SeparateTransactionByMonth()")
+			glog.Info(tt.want)
+			m := s.SeparateTransactionByMonth()
+			compareTransactionByMonth(t, tt.want, m)
+			glog.Info(m)
+		})
+	}
+}
+
+func compareTransactionByMonth(t *testing.T, want, got map[string]*MountsByMonth) {
+	t.Helper()
+	for k, v := range want {
+		a := got[k]
+		assert.Equal(t, v.AverageDebitAmount, a.AverageDebitAmount)
+		assert.Equal(t, v.AverageCreditAmount, a.AverageCreditAmount)
+	}
+}
+
+func TestService_SumAverageByMonth(t *testing.T) {
+	type fields struct {
+		idUser       int
+		transactions internal.Transactions
+		debit        internal.Transactions
+		credit       internal.Transactions
+		email        internal.EmailService
+		userRep      internal.RepositoryUser
+		transRep     internal.RepositoryTransaction
+	}
+	type args struct {
+		mountsBymonth map[string]*MountsByMonth
+	}
+	mountsArr := make(map[string]*MountsByMonth)
+	debit := make(mounts, 0)
+	debit = append(debit, -11)
+	credit := make(mounts, 0)
+	credit = append(credit, 90)
+	credit = append(credit, 10)
+	mountsArr["April"] = &MountsByMonth{
+		AverageDebitAmount:  debit,
+		AverageCreditAmount: credit,
+	}
+
+	want := make(map[string]*internal.Average)
+	want["April"] = &internal.Average{
+		AverageDebitAmount:  -11,
+		AverageCreditAmount: 50,
+	}
+
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   map[string]*internal.Average
+	}{
+		{
+			name:   "Success getting average by month ",
+			fields: fields{},
+			args: args{
+				mountsBymonth: mountsArr,
+			},
+			want: want,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s := &Service{}
+			got := s.SumAverageByMonth(tt.args.mountsBymonth)
+			helperCheckAverage(t, got, want)
+		})
+	}
+}
+
+func helperCheckAverage(t *testing.T, got, want map[string]*internal.Average) {
+	t.Helper()
+
+	for k, w := range want {
+		g := got[k]
+		assert.Equal(t, w.AverageCreditAmount, g.AverageCreditAmount)
+		assert.Equal(t, w.AverageDebitAmount, g.AverageDebitAmount)
+	}
 }

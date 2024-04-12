@@ -36,8 +36,11 @@ const templateAux = `
 		{{ range  $index, $element := .TransactionByMonth}}
 		  <li style="line-height: 22.4px;">Number of transactions in {{$index}}: {{$element}}</li>
 		{{end}}
-		<li style="line-height: 22.4px;">Average debit amount: {{.AverageDebitMount}}</li>
-		<li style="line-height: 22.4px;">Average credit amount: {{.AverageCreditAmount}}</li>
+		 {{ range  $index, $element := .AverageByMonth}}
+		  <li style="line-height: 22.4px;">Average debit amount in {{$index}}: {{$element.AverageDebitAmount}}</li>
+		  <li style="line-height: 22.4px;">Average credit amount in {{$index}} : {{$element.AverageCreditAmount}}</li>
+
+  		 {{end}}
 
 	</ol>
 `
@@ -71,6 +74,7 @@ func (s *SMTPService) Send(destination, name string, balance mooc.Balance) error
 		"AverageDebitMount":   balance.AverageDebitAmount,
 		"AverageCreditAmount": balance.AverageCreditAmount,
 		"TransactionByMonth":  balance.TransactionByMonth,
+		"AverageByMonth":      balance.AverageByMonth,
 	}
 	// buffer for new replaced string
 	var strBuffer bytes.Buffer

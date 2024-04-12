@@ -60,11 +60,23 @@ func TestSMTPService_Send(t *testing.T) {
 			months["Feb"] = 1
 			months["march"] = 3
 
+			monthsAverage := make(map[string]mooc.Average)
+			monthsAverage["July"] = mooc.Average{
+				AverageDebitAmount:  -10,
+				AverageCreditAmount: 10,
+			}
+
+			monthsAverage["Feb"] = mooc.Average{
+				AverageDebitAmount:  -20,
+				AverageCreditAmount: 40,
+			}
+
 			if err := s.Send(tt.args.destination, tt.args.name, mooc.Balance{
 				Total:               1,
 				AverageDebitAmount:  2,
 				AverageCreditAmount: 3,
 				TransactionByMonth:  months,
+				AverageByMonth:      monthsAverage,
 			}); (err != nil) != tt.wantErr {
 				t.Errorf("Send() error = %v, wantErr %v", err, tt.wantErr)
 			}
