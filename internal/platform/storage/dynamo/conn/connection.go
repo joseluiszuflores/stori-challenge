@@ -10,12 +10,7 @@ import (
 )
 
 func NewAWSConfig(awsAccessKey, awsSecretAccessKey, awsRegion, urlDevAWSDynamo string, devEnv bool) (aws.Config, error) {
-	// setup aws credential provider
-	cred := aws.NewCredentialsCache(credentials.NewStaticCredentialsProvider(
-		awsAccessKey,
-		awsSecretAccessKey,
-		"",
-	))
+
 	if devEnv {
 		return devAWSConf(awsRegion, urlDevAWSDynamo)
 	}
@@ -23,7 +18,6 @@ func NewAWSConfig(awsAccessKey, awsSecretAccessKey, awsRegion, urlDevAWSDynamo s
 	conf, err := config.LoadDefaultConfig(
 		context.TODO(),
 		config.WithRegion(awsRegion),
-		config.WithCredentialsProvider(cred),
 	)
 	if err != nil {
 		return aws.Config{}, err
@@ -33,7 +27,7 @@ func NewAWSConfig(awsAccessKey, awsSecretAccessKey, awsRegion, urlDevAWSDynamo s
 }
 
 func NewDynamoDBClient(sdkConfig aws.Config) *dynamodb.Client {
-	// initialize new dynamodb client from aws config and return it
+	// initialize new dynamodb client from lambda config and return it
 	return dynamodb.NewFromConfig(sdkConfig)
 }
 

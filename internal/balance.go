@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -72,3 +73,11 @@ func IsValidInt(val int) bool {
 }
 
 var ErrIDUserIsInvalid = errors.New("the user id is invalid")
+
+func ToIntFromFile(val string) string {
+	allName := strings.Split(val, ".")
+	if len(allName) < 1 {
+		return ""
+	}
+	return allName[0]
+}

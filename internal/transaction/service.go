@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"context"
+	"github.com/golang/glog"
 	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 )
 
@@ -36,7 +37,7 @@ func (s *Service) SummaryTransaction(ctx context.Context) error {
 		AverageCreditAmount: s.AverageCredit(),
 		TransactionByMonth:  s.MovementsByMonth(),
 	}
-
+	glog.Info("Sending email")
 	if err := s.email.Send(usr.Email, usr.Name, balance); err != nil {
 		return err
 	}

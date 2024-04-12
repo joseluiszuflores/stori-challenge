@@ -26,3 +26,7 @@ recursos
 .DS_Store
 
 source/***
+
+c.out
+coverage.html
+report.xml

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/joseluiszuflores/stori-challenge/cmd/bootstrap"
+	"github.com/joseluiszuflores/stori-challenge/internal/bootstrap"
 	"github.com/spf13/cobra"
 	"os"
 )
