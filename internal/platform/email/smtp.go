@@ -20,12 +20,14 @@ type SMTPService struct {
 	templatePath string
 }
 
+//nolint:lll
 func NewSMTPService(host string, port int, username string, password string, from string, templatePath string) *SMTPService {
 	return &SMTPService{host: host, port: port, username: username, password: password, from: from, templatePath: templatePath}
 }
 
 const Subject = "Total Balance"
 
+//nolint:lll
 const templateAux = `
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">

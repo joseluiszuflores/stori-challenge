@@ -65,13 +65,13 @@ func TestService_SeparatedDebitCredit(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Service{
+			service := &Service{
 				transactions: tt.fields.transactions,
 			}
-			s.SeparatedDebitCredit()
-			assert.Equal(t, float64(0), s.transactions.Sum())
-			assert.Equal(t, -40.0, s.debit.Sum())
-			assert.Equal(t, 40.0, s.credit.Sum())
+			service.SeparatedDebitCredit()
+			assert.Equal(t, float64(0), service.transactions.Sum())
+			assert.Equal(t, -40.0, service.debit.Sum())
+			assert.Equal(t, 40.0, service.credit.Sum())
 		})
 	}
 }
@@ -133,14 +133,14 @@ func TestService_MovementsByMonth(t *testing.T) {
 			want: map[string]int{"July": 2, "June": 2},
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
 			s := &Service{
-				transactions: tt.fields.transactions,
-				debit:        tt.fields.debit,
-				credit:       tt.fields.credit,
+				transactions: test.fields.transactions,
+				debit:        test.fields.debit,
+				credit:       test.fields.credit,
 			}
-			assert.Equalf(t, tt.want, s.MovementsByMonth(), "MovementsByMonth()")
+			assert.Equalf(t, test.want, s.MovementsByMonth(), "MovementsByMonth()")
 		})
 	}
 }
@@ -182,14 +182,14 @@ func TestService_AverageDebit(t *testing.T) {
 			want: -15.38,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
 			s := &Service{
-				transactions: tt.fields.transactions,
-				debit:        tt.fields.debit,
-				credit:       tt.fields.credit,
+				transactions: test.fields.transactions,
+				debit:        test.fields.debit,
+				credit:       test.fields.credit,
 			}
-			assert.Equalf(t, tt.want, s.AverageDebit(), "AverageDebit()")
+			assert.Equalf(t, test.want, s.AverageDebit(), "AverageDebit()")
 		})
 	}
 }
@@ -231,14 +231,14 @@ func TestService_AverageCredit(t *testing.T) {
 			want: 35.25,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
 			s := &Service{
-				transactions: tt.fields.transactions,
-				debit:        tt.fields.debit,
-				credit:       tt.fields.credit,
+				transactions: test.fields.transactions,
+				debit:        test.fields.debit,
+				credit:       test.fields.credit,
 			}
-			assert.Equalf(t, tt.want, s.AverageCredit(), "AverageCredit()")
+			assert.Equalf(t, test.want, s.AverageCredit(), "AverageCredit()")
 		})
 	}
 }
@@ -280,20 +280,20 @@ func TestService_SummaryTransaction(t *testing.T) {
 			wantErr: assert.NoError,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			s, err := NewService(
-				tt.fields.idUser,
-				tt.fields.transactions,
-				tt.fields.email,
-				tt.fields.userRep,
-				tt.fields.transRep,
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			service, err := NewService(
+				test.fields.idUser,
+				test.fields.transactions,
+				test.fields.email,
+				test.fields.userRep,
+				test.fields.transRep,
 			)
 			if err != nil {
 				assert.NoError(t, err)
 				return
 			}
-			tt.wantErr(t, s.SummaryTransaction(tt.args.ctx), fmt.Sprintf("SummaryTransaction(%v)", tt.args.ctx))
+			test.wantErr(t, service.SummaryTransaction(test.args.ctx), fmt.Sprintf("SummaryTransaction(%v)", test.args.ctx))
 		})
 	}
 }
@@ -385,21 +385,21 @@ func TestService_SeparateTransactionByMonth(t *testing.T) {
 			want: mountsArr,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			s := &Service{
-				idUser:       tt.fields.idUser,
-				transactions: tt.fields.transactions,
-				debit:        tt.fields.debit,
-				credit:       tt.fields.credit,
-				email:        tt.fields.email,
-				userRep:      tt.fields.userRep,
-				transRep:     tt.fields.transRep,
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			service := &Service{
+				idUser:       test.fields.idUser,
+				transactions: test.fields.transactions,
+				debit:        test.fields.debit,
+				credit:       test.fields.credit,
+				email:        test.fields.email,
+				userRep:      test.fields.userRep,
+				transRep:     test.fields.transRep,
 			}
-			//assert.Equalf(t, tt.want, s.SeparateTransactionByMonth(), "SeparateTransactionByMonth()")
-			glog.Info(tt.want)
-			m := s.SeparateTransactionByMonth()
-			compareTransactionByMonth(t, tt.want, m)
+
+			glog.Info(test.want)
+			m := service.SeparateTransactionByMonth()
+			compareTransactionByMonth(t, test.want, m)
 			glog.Info(m)
 		})
 	}

@@ -2,15 +2,14 @@ package s3
 
 import (
 	"bytes"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
 type S3Reader struct {
-	bucket string
-	key    string
-	sess   *session.Session
+	sess *session.Session
 }
 
 func NewS3Reader(region string) (*S3Reader, error) {

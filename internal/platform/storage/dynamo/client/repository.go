@@ -36,5 +36,6 @@ func (r *Repository) GetClient(ctx context.Context, id int) (*mooc.User, error) 
 	if err := attributevalue.UnmarshalMap(item.Item, &usr); err != nil {
 		return nil, err
 	}
+
 	return &usr, nil
 }

@@ -34,6 +34,7 @@ func (r *Repository) SaveTransaction(ctx context.Context, transaction mooc.Trans
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -46,13 +47,14 @@ func (r *Repository) SaveTransactions(ctx context.Context, transaction mooc.Tran
 		data["date"] = &types.AttributeValueMemberS{Value: trans.Date.String()}
 		data["transaction"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%.2f", trans.Transaction)}
 		transactionDB = append(transactionDB, types.TransactWriteItem{
+			//nolint:exhaustruct
 			Put: &types.Put{
 				Item:      data,
 				TableName: aws.String(tableNameTransactionDynamo),
 			},
 		})
 	}
-
+	//nolint:exhaustruct
 	input := &dynamodb.TransactWriteItemsInput{
 		TransactItems: transactionDB,
 	}

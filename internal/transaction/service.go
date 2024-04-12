@@ -16,6 +16,7 @@ type Service struct {
 	transRep     mooc.RepositoryTransaction
 }
 
+//nolint:lll
 func NewService(idUser string, transactions mooc.Transactions, email mooc.EmailService, userRep mooc.RepositoryUser, transRep mooc.RepositoryTransaction) (*Service, error) {
 	id := mooc.ToInt(idUser)
 	if mooc.IsValidInt(id) {
@@ -122,16 +123,16 @@ func (s *Service) SeparateTransactionByMonth() map[string]*MountsByMonth {
 func (s *Service) SumAverageByMonth(mountsBymonth map[string]*MountsByMonth) map[string]*mooc.Average {
 	months := make(map[string]*mooc.Average)
 	for month, mounts := range mountsBymonth {
-		m, ok := months[month]
+		monthVal, ok := months[month]
 		if !ok {
 			months[month] = &mooc.Average{
 				AverageDebitAmount:  0,
 				AverageCreditAmount: 0,
 			}
-			m = months[month]
+			monthVal = months[month]
 		}
-		m.AverageDebitAmount = mounts.AverageDebitAmount.Sum() / float64(len(mounts.AverageDebitAmount))
-		m.AverageCreditAmount = mounts.AverageCreditAmount.Sum() / float64(len(mounts.AverageCreditAmount))
+		monthVal.AverageDebitAmount = mounts.AverageDebitAmount.Sum() / float64(len(mounts.AverageDebitAmount))
+		monthVal.AverageCreditAmount = mounts.AverageCreditAmount.Sum() / float64(len(mounts.AverageCreditAmount))
 	}
 
 	return months

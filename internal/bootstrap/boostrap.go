@@ -40,6 +40,7 @@ func Setup(transactions mooc.Transactions, userId string) error {
 	}
 
 	// Call to new instance of DynamoDB.
+	//nolint:varnamelen
 	db := conn.NewDynamoDBClient(cnf)
 	// Instance of migrator to does the migration.
 	m := migration.NewMigrator(db)

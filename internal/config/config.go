@@ -19,5 +19,6 @@ func Init() error {
 	if err := configor.Load(&Config); err != nil {
 		return err
 	}
+
 	return nil
 }

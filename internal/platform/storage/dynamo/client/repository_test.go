@@ -1,3 +1,6 @@
+//go:build integration
+// +build integration
+
 package client
 
 import (
@@ -27,7 +30,7 @@ func TestRepository_GetClient(t *testing.T) {
 
 		return
 	}
-
+	//nolint:varnamelen
 	db := conn.NewDynamoDBClient(conf)
 
 	usr := createUser(t, db)
@@ -71,6 +74,7 @@ func TestRepository_GetClient(t *testing.T) {
 	}
 }
 
+//nolint:varnamelen
 func createUser(t *testing.T, db *dynamodb.Client) *mooc.User {
 	t.Helper()
 	usr := mooc.User{

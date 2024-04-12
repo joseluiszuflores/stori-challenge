@@ -111,6 +111,7 @@ func (d dateCSV) Year() int {
 	return time.Now().Year()
 }
 
+//nolint:gomnd
 func (d dateCSV) DateWithYear() string {
 	month := fmt.Sprintf("%d", d.Month())
 	if d.Month() < 10 {
