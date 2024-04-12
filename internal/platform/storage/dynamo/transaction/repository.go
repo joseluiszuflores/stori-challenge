@@ -3,6 +3,7 @@ package transaction
 import (
 	"context"
 	"fmt"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
@@ -63,5 +64,6 @@ func (r *Repository) SaveTransactions(ctx context.Context, transaction mooc.Tran
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
