@@ -23,6 +23,7 @@ func handler(ctx context.Context, s3Event events.S3Event) error {
 	s3D, err := s32.NewS3Reader(config.Config.AWSRegion)
 	if err != nil {
 		glog.Error("error in s3 Reader", err)
+
 		return err
 	}
 	for _, record := range s3Event.Records {

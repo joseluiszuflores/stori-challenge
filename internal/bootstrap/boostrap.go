@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+
 	"github.com/golang/glog"
 	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 	"github.com/joseluiszuflores/stori-challenge/internal/config"
@@ -26,10 +27,11 @@ func Run(path, userId string) error {
 	if err := config.Init(); err != nil {
 		return err
 	}
+
 	return Setup(transactions, userId)
 }
 
-func Setup(transactions mooc.Transactions, userId string) error {
+func Setup(transactions mooc.Transactions, userID string) error {
 	key, secret := config.Config.AWSAccessKey, config.Config.AWSSecretAcessKey
 	region, url := config.Config.AWSRegion, config.Config.AWSUrlDynamoDev
 
@@ -57,7 +59,7 @@ func Setup(transactions mooc.Transactions, userId string) error {
 	clientRep := client.NewRepository(db)
 	transactionRep := transaction2.NewRepository(db)
 
-	service, err := transaction.NewService(userId, transactions, smtp, clientRep, transactionRep)
+	service, err := transaction.NewService(userID, transactions, smtp, clientRep, transactionRep)
 	if err != nil {
 		return err
 	}

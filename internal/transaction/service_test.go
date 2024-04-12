@@ -248,8 +248,6 @@ func TestService_SummaryTransaction(t *testing.T) {
 	type fields struct {
 		idUser       string
 		transactions internal.Transactions
-		debit        internal.Transactions
-		credit       internal.Transactions
 		email        internal.EmailService
 		userRep      internal.RepositoryUser
 		transRep     internal.RepositoryTransaction
