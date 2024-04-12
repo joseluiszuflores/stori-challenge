@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	//nolint:exhaustruct
 	var cmdEvaluate = &cobra.Command{
 		Use:   "evaluate",
 		Short: "Evaluates the file and sends an email to user previously added",
@@ -40,7 +41,7 @@ and the average credit and average debit amounts grouped by month. `,
 	}
 	cmdEvaluate.Flags().String("path", "", "is the path of file csv")
 	cmdEvaluate.Flags().String("user", "", "is user id")
-
+	//nolint:exhaustruct
 	var rootCmd = &cobra.Command{Use: "app"}
 	rootCmd.AddCommand(cmdEvaluate)
 	rootCmd.Execute()

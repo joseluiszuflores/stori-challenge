@@ -14,6 +14,7 @@ type S3Reader struct {
 }
 
 func NewS3Reader(region string) (*S3Reader, error) {
+	//nolint:exhaustruct
 	sess, err := session.NewSession(&aws.Config{
 		Region: aws.String(region)},
 	)

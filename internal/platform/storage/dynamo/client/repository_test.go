@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package client
 
 import (
@@ -24,7 +21,7 @@ func TestRepository_GetClient(t *testing.T) {
 		ctx context.Context
 		id  int
 	}
-	conf, err := conn.NewAWSConfig("", "", "us-east-1", "http://localhost:8000", true)
+	conf, err := conn.NewAWSConfig("", "", "us-east-2", "http://localhost:8000", true)
 	if err != nil {
 		assert.NoError(t, err)
 
@@ -90,6 +87,7 @@ func createUser(t *testing.T, db *dynamodb.Client) *mooc.User {
 		Item:      data,
 		TableName: aws.String(tableNameUserDynamo),
 	}
-	db.PutItem(context.TODO(), input)
+	_, err := db.PutItem(context.TODO(), input)
+	assert.NoError(t, err)
 	return &usr
 }

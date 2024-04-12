@@ -1,6 +1,3 @@
-//go:build integration
-// +build integration
-
 package transaction
 
 import (
@@ -25,7 +22,7 @@ func TestRepository_SaveTransaction(t *testing.T) {
 		ctx         context.Context
 		transaction internal.Transaction
 	}
-	conf, err := conn.NewAWSConfig("", "", "us-east-1", "http://localhost:8000", true)
+	conf, err := conn.NewAWSConfig("", "", "us-east-2", "http://localhost:8000", true)
 	if err != nil {
 		assert.NoError(t, err)
 

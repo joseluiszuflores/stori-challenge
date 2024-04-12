@@ -11,7 +11,7 @@ var Config = struct {
 	AWSAccessKey      string `default:"" required:"true" env:"AWS_ACCESS_KEY"`
 	AWSSecretAcessKey string `default:"" required:"true" env:"AWS_SECRET_ACCESS_KEY"`
 	AWSRegion         string `default:"us-east-2" required:"true" env:"AWS_REGION"`
-	DevEnv            bool   `default:"false" required:"true" env:"DEV_ENV"` // is used only dev environment or local.
+	DevEnv            bool   `default:"true" required:"true" env:"DEV_ENV"` // is used only dev environment or local.
 	AWSUrlDynamoDev   string `default:"http://localhost:8000" required:"true" env:"AWS_URL_DYNAMO_DEV"`
 }{}
 
