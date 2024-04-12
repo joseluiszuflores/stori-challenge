@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
+	"log"
+
 	"github.com/golang/glog"
 	"github.com/joseluiszuflores/stori-challenge/internal"
 	"github.com/joseluiszuflores/stori-challenge/internal/bootstrap"
 	"github.com/joseluiszuflores/stori-challenge/internal/config"
 	"github.com/joseluiszuflores/stori-challenge/internal/platform/file"
 	s32 "github.com/joseluiszuflores/stori-challenge/internal/platform/s3"
-	"log"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
