@@ -64,5 +64,6 @@ func Setup(transactions mooc.Transactions, userId string) error {
 	if err := service.SummaryTransaction(context.TODO()); err != nil {
 		return err
 	}
+
 	return nil
 }

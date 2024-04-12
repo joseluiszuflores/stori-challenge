@@ -22,6 +22,7 @@ func NewRepository(client *dynamodb.Client) *Repository {
 
 func (r *Repository) GetClient(ctx context.Context, id int) (*mooc.User, error) {
 	data := make(map[string]types.AttributeValue)
+	//nolint:perfsprint
 	data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", id)}
 	//nolint:exhaustruct
 	input := &dynamodb.GetItemInput{

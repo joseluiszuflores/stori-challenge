@@ -113,10 +113,12 @@ func (d dateCSV) Year() int {
 
 //nolint:gomnd
 func (d dateCSV) DateWithYear() string {
+	//nolint:perfsprint
 	month := fmt.Sprintf("%d", d.Month())
 	if d.Month() < 10 {
 		month = fmt.Sprintf("0%d", d.Month())
 	}
+	//nolint:perfsprint
 	day := fmt.Sprintf("%d", d.Day())
 	if d.Day() < 10 {
 		day = fmt.Sprintf("0%d", d.Day())
