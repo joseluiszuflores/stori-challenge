@@ -2,24 +2,29 @@ package main
 
 import (
 	"context"
+	"log"
+
 	"github.com/golang/glog"
 	"github.com/joseluiszuflores/stori-challenge/internal"
 	"github.com/joseluiszuflores/stori-challenge/internal/bootstrap"
 	"github.com/joseluiszuflores/stori-challenge/internal/config"
 	"github.com/joseluiszuflores/stori-challenge/internal/platform/file"
 	s32 "github.com/joseluiszuflores/stori-challenge/internal/platform/s3"
-	"log"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+//nolint:revive
 func handler(ctx context.Context, s3Event events.S3Event) error {
 	glog.Info("Starting event")
-	config.Init()
+	if err := config.Init(); err != nil {
+		return err
+	}
 	s3D, err := s32.NewS3Reader(config.Config.AWSRegion)
 	if err != nil {
 		glog.Error("error in s3 Reader", err)
+
 		return err
 	}
 	for _, record := range s3Event.Records {
@@ -38,6 +43,7 @@ func handler(ctx context.Context, s3Event events.S3Event) error {
 
 			continue
 		}
+		//nolint:contextcheck
 		if err := bootstrap.Setup(transactions, internal.ToIntFromFile(key)); err != nil {
 			glog.Error("err ToTransactionsFromBytes:", err)
 

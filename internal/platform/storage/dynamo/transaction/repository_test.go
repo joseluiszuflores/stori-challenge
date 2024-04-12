@@ -25,13 +25,13 @@ func TestRepository_SaveTransaction(t *testing.T) {
 		ctx         context.Context
 		transaction internal.Transaction
 	}
-	conf, err := conn.NewAWSConfig("", "", "us-east-1", "http://localhost:8000", true)
+	conf, err := conn.NewAWSConfig("", "", "us-east-2", "http://localhost:8000", true)
 	if err != nil {
 		assert.NoError(t, err)
 
 		return
 	}
-	d := time.Now()
+	today := time.Now()
 	tests := []struct {
 		name    string
 		fields  fields
@@ -45,7 +45,7 @@ func TestRepository_SaveTransaction(t *testing.T) {
 				ctx: context.TODO(),
 				transaction: internal.Transaction{
 					ID:          2,
-					Date:        d,
+					Date:        today,
 					Transaction: 900,
 				},
 			},
@@ -63,8 +63,8 @@ func TestRepository_SaveTransaction(t *testing.T) {
 			}
 			data := make(map[string]types.AttributeValue)
 			data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", tt.args.transaction.ID)}
-			data["date"] = &types.AttributeValueMemberS{Value: d.String()}
-
+			data["date"] = &types.AttributeValueMemberS{Value: today.String()}
+			//nolint:exhaustruct
 			input := &dynamodb.GetItemInput{
 				Key:       data,
 				TableName: aws.String(tableNameTransactionDynamo),
@@ -149,7 +149,7 @@ func helperFnFindTransactioninDB(ctx context.Context, t *testing.T, client *dyna
 		data := make(map[string]types.AttributeValue)
 		data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", val.ID)}
 		data["date"] = &types.AttributeValueMemberS{Value: val.Date.String()}
-
+		//nolint:exhaustruct
 		input := &dynamodb.GetItemInput{
 			Key:       data,
 			TableName: aws.String(tableNameTransactionDynamo),

@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -22,8 +23,9 @@ func NewRepository(client *dynamodb.Client) *Repository {
 
 func (r *Repository) GetClient(ctx context.Context, id int) (*mooc.User, error) {
 	data := make(map[string]types.AttributeValue)
+	//nolint:perfsprint
 	data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", id)}
-
+	//nolint:exhaustruct
 	input := &dynamodb.GetItemInput{
 		Key:       data,
 		TableName: aws.String(tableNameUserDynamo),
@@ -36,5 +38,6 @@ func (r *Repository) GetClient(ctx context.Context, id int) (*mooc.User, error) 
 	if err := attributevalue.UnmarshalMap(item.Item, &usr); err != nil {
 		return nil, err
 	}
+
 	return &usr, nil
 }

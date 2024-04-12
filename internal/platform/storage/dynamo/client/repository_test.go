@@ -24,13 +24,13 @@ func TestRepository_GetClient(t *testing.T) {
 		ctx context.Context
 		id  int
 	}
-	conf, err := conn.NewAWSConfig("", "", "us-east-1", "http://localhost:8000", true)
+	conf, err := conn.NewAWSConfig("", "", "us-east-2", "http://localhost:8000", true)
 	if err != nil {
 		assert.NoError(t, err)
 
 		return
 	}
-
+	//nolint:varnamelen
 	db := conn.NewDynamoDBClient(conf)
 
 	usr := createUser(t, db)
@@ -74,6 +74,7 @@ func TestRepository_GetClient(t *testing.T) {
 	}
 }
 
+//nolint:varnamelen
 func createUser(t *testing.T, db *dynamodb.Client) *mooc.User {
 	t.Helper()
 	usr := mooc.User{
@@ -90,6 +91,7 @@ func createUser(t *testing.T, db *dynamodb.Client) *mooc.User {
 		Item:      data,
 		TableName: aws.String(tableNameUserDynamo),
 	}
-	db.PutItem(context.TODO(), input)
+	_, err := db.PutItem(context.TODO(), input)
+	assert.NoError(t, err)
 	return &usr
 }

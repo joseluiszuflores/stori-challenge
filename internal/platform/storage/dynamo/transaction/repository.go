@@ -3,6 +3,7 @@ package transaction
 import (
 	"context"
 	"fmt"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
@@ -22,6 +23,7 @@ func NewRepository(client *dynamodb.Client) *Repository {
 // SaveTransaction saves the data of transaction.
 func (r *Repository) SaveTransaction(ctx context.Context, transaction mooc.Transaction) error {
 	data := make(map[string]types.AttributeValue)
+	//nolint:perfsprint
 	data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", transaction.ID)}
 	data["date"] = &types.AttributeValueMemberS{Value: transaction.Date.String()}
 	data["transaction"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%.2f", transaction.Transaction)}
@@ -34,6 +36,7 @@ func (r *Repository) SaveTransaction(ctx context.Context, transaction mooc.Trans
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -42,17 +45,19 @@ func (r *Repository) SaveTransactions(ctx context.Context, transaction mooc.Tran
 	transactionDB := make([]types.TransactWriteItem, 0)
 	for _, trans := range transaction {
 		data := make(map[string]types.AttributeValue)
+		//nolint:perfsprint
 		data["id"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%d", trans.ID)}
 		data["date"] = &types.AttributeValueMemberS{Value: trans.Date.String()}
 		data["transaction"] = &types.AttributeValueMemberN{Value: fmt.Sprintf("%.2f", trans.Transaction)}
 		transactionDB = append(transactionDB, types.TransactWriteItem{
+			//nolint:exhaustruct
 			Put: &types.Put{
 				Item:      data,
 				TableName: aws.String(tableNameTransactionDynamo),
 			},
 		})
 	}
-
+	//nolint:exhaustruct
 	input := &dynamodb.TransactWriteItemsInput{
 		TransactItems: transactionDB,
 	}
@@ -61,5 +66,6 @@ func (r *Repository) SaveTransactions(ctx context.Context, transaction mooc.Tran
 	if err != nil {
 		return err
 	}
+
 	return nil
 }

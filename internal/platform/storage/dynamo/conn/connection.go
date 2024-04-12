@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
+//nolint:lll,revive
 func NewAWSConfig(awsAccessKey, awsSecretAccessKey, awsRegion, urlDevAWSDynamo string, devEnv bool) (aws.Config, error) {
-
 	if devEnv {
 		return devAWSConf(awsRegion, urlDevAWSDynamo)
 	}

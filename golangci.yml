@@ -25,6 +25,9 @@ linters:
     - gci
     - gofumpt
     - exhaustivestruct
+    - exhaustruct
+    - tagalign
+    - testifylint
 
 linters-settings:
   errcheck:

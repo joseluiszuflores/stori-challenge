@@ -20,12 +20,14 @@ type SMTPService struct {
 	templatePath string
 }
 
+//nolint:lll
 func NewSMTPService(host string, port int, username string, password string, from string, templatePath string) *SMTPService {
 	return &SMTPService{host: host, port: port, username: username, password: password, from: from, templatePath: templatePath}
 }
 
 const Subject = "Total Balance"
 
+//nolint:lll
 const templateAux = `
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -36,8 +38,11 @@ const templateAux = `
 		{{ range  $index, $element := .TransactionByMonth}}
 		  <li style="line-height: 22.4px;">Number of transactions in {{$index}}: {{$element}}</li>
 		{{end}}
-		<li style="line-height: 22.4px;">Average debit amount: {{.AverageDebitMount}}</li>
-		<li style="line-height: 22.4px;">Average credit amount: {{.AverageCreditAmount}}</li>
+		 {{ range  $index, $element := .AverageByMonth}}
+		  <li style="line-height: 22.4px;">Average debit amount in {{$index}}: {{$element.AverageDebitAmount}}</li>
+		  <li style="line-height: 22.4px;">Average credit amount in {{$index}} : {{$element.AverageCreditAmount}}</li>
+
+  		 {{end}}
 
 	</ol>
 `
@@ -71,6 +76,7 @@ func (s *SMTPService) Send(destination, name string, balance mooc.Balance) error
 		"AverageDebitMount":   balance.AverageDebitAmount,
 		"AverageCreditAmount": balance.AverageCreditAmount,
 		"TransactionByMonth":  balance.TransactionByMonth,
+		"AverageByMonth":      balance.AverageByMonth,
 	}
 	// buffer for new replaced string
 	var strBuffer bytes.Buffer
