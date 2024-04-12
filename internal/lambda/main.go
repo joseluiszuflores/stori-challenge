@@ -14,9 +14,12 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+//nolint:revive
 func handler(ctx context.Context, s3Event events.S3Event) error {
 	glog.Info("Starting event")
-	config.Init()
+	if err := config.Init(); err != nil {
+		return err
+	}
 	s3D, err := s32.NewS3Reader(config.Config.AWSRegion)
 	if err != nil {
 		glog.Error("error in s3 Reader", err)
@@ -38,6 +41,7 @@ func handler(ctx context.Context, s3Event events.S3Event) error {
 
 			continue
 		}
+		//nolint:contextcheck
 		if err := bootstrap.Setup(transactions, internal.ToIntFromFile(key)); err != nil {
 			glog.Error("err ToTransactionsFromBytes:", err)
 

@@ -23,7 +23,9 @@ func Run(path, userId string) error {
 
 		return err
 	}
-	config.Init()
+	if err := config.Init(); err != nil {
+		return err
+	}
 	return Setup(transactions, userId)
 }
 

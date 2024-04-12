@@ -47,5 +47,6 @@ and the average credit and average debit amounts grouped by month. `,
 	//nolint:exhaustruct
 	var rootCmd = &cobra.Command{Use: "app"}
 	rootCmd.AddCommand(cmdEvaluate)
+	//nolint:errcheck
 	rootCmd.Execute()
 }

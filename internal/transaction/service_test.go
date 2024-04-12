@@ -254,6 +254,7 @@ func TestService_SummaryTransaction(t *testing.T) {
 		transRep     internal.RepositoryTransaction
 	}
 	type args struct {
+		//nolint:containedctx
 		ctx context.Context
 	}
 
@@ -416,13 +417,6 @@ func compareTransactionByMonth(t *testing.T, want, got map[string]*MountsByMonth
 
 func TestService_SumAverageByMonth(t *testing.T) {
 	type fields struct {
-		idUser       int
-		transactions internal.Transactions
-		debit        internal.Transactions
-		credit       internal.Transactions
-		email        internal.EmailService
-		userRep      internal.RepositoryUser
-		transRep     internal.RepositoryTransaction
 	}
 	type args struct {
 		mountsBymonth map[string]*MountsByMonth

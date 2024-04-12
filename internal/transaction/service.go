@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"context"
+
 	"github.com/golang/glog"
 	mooc "github.com/joseluiszuflores/stori-challenge/internal"
 )
@@ -22,6 +23,7 @@ func NewService(idUser string, transactions mooc.Transactions, email mooc.EmailS
 	if mooc.IsValidInt(id) {
 		return nil, mooc.ErrIDUserIsInvalid
 	}
+
 	return &Service{idUser: id, transactions: transactions, email: email, userRep: userRep, transRep: transRep}, nil
 }
 

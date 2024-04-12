@@ -8,11 +8,11 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 )
 
-type S3Reader struct {
+type Reader struct {
 	sess *session.Session
 }
 
-func NewS3Reader(region string) (*S3Reader, error) {
+func NewS3Reader(region string) (*Reader, error) {
 	//nolint:exhaustruct
 	sess, err := session.NewSession(&aws.Config{
 		Region: aws.String(region)},
@@ -21,12 +21,12 @@ func NewS3Reader(region string) (*S3Reader, error) {
 		return nil, err
 	}
 
-	return &S3Reader{
+	return &Reader{
 		sess: sess,
 	}, nil
 }
 
-func (s *S3Reader) GetBytes(bucket, item string) ([]byte, error) {
+func (s *Reader) GetBytes(bucket, item string) ([]byte, error) {
 	s3St := s3.New(s.sess)
 	out, err := s3St.GetObject(&s3.GetObjectInput{
 		Bucket: aws.String(bucket),
