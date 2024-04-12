@@ -296,6 +296,7 @@ func TestService_SummaryTransaction(t *testing.T) {
 			)
 			if err != nil {
 				assert.NoError(t, err)
+
 				return
 			}
 			test.wantErr(t, service.SummaryTransaction(test.args.ctx), fmt.Sprintf("SummaryTransaction(%v)", test.args.ctx))
@@ -353,6 +354,7 @@ func helperTransactions(t *testing.T) internal.Transactions {
 		Date:        time.Now(),
 		Transaction: -11,
 	})
+
 	return transactionsArr
 }
 

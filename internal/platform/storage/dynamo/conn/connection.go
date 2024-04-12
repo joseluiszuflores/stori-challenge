@@ -11,7 +11,6 @@ import (
 
 //nolint:lll,revive
 func NewAWSConfig(awsAccessKey, awsSecretAccessKey, awsRegion, urlDevAWSDynamo string, devEnv bool) (aws.Config, error) {
-
 	if devEnv {
 		return devAWSConf(awsRegion, urlDevAWSDynamo)
 	}
