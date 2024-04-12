@@ -60,6 +60,12 @@ to handler the data and getting  a summary about the debit and credit average.
 
 ### 🔥 Application execution
 
+We follow the next  route to create the logic.
+
+ <img alt="Stori" src="./img/Charts.png" width="950px" height="450px" />
+
+
+
 #### Install dependencies
 1.  [Install mock](https://github.com/golang/mock) with  ` go install github.com/golang/mock/mockgen@v1.6.0`
 2. Install all the dependencies  `go mod tidy`
@@ -176,3 +182,51 @@ This is the struct of this project
 For this project we have 85% of coverage.
 
 > the good thing here is that we can have a index.html with all part that out code don't cover with  our tests
+
+
+### 🎉 Deployment
+
+ We are taking this way to deploy our service.
+
+<img alt="Stori" src="./img/diagram.png" width="650px" height="450px" />
+
+1. Created the role that will access to lambda,s3,dynamo,cloudwatch.
+
+<img alt="Stori" src="./img/roles.png" width="450px" height="350px" />
+
+2. added the variables that we need.
+
+
+<img alt="Stori" src="./img/variables.png" width="450px" height="150px" />
+
+
+3. Created of bucket in S3 service.
+
+<img alt="Stori" src="./img/bucket.png"  />
+
+4. We created a lamba function where we mount our code with some changes
+<img alt="Stori" src="./img/stori-interaction-aws-platform.png"  />
+
+
+5. Created the trigger of event in our bucket.
+<img alt="Stori" src="./img/event-bucket.png"  />
+
+
+6. Upload a file with the name of our user that we need to send the email. The name for our file in our service will be important because
+   we will consult our dynamoDB by this name
+<img alt="Stori" src="./img/upload-file.png"  />
+<img alt="Stori" src="./img/file uploaded.png"  />
+
+> noticed the file name is 1.csv
+
+7. We should have in our email the message with the correct information
+
+<img alt="Stori" src="./img/email-received.png"  />
+
+> You will notice that the email is different from the beginning, this is because we added some code where we replaced this template for another easier to send.
+
+
+8. The data from the csv had to be added to our dynamoDB
+   <img alt="Stori" src="./img/dynamo.png"  />
+
+> noticed that we can see the tables transaction and user.
