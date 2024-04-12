@@ -304,7 +304,7 @@ func TestService_SummaryTransaction(t *testing.T) {
 	}
 }
 
-func helperEmailServiceMock(t *testing.T) internal.EmailService {
+func helperEmailServiceMock(t *testing.T) *mocks.MockEmailService {
 	t.Helper()
 	cnt := gomock.NewController(t)
 	email := mocks.NewMockEmailService(cnt)
@@ -313,7 +313,7 @@ func helperEmailServiceMock(t *testing.T) internal.EmailService {
 	return email
 }
 
-func helperUserRepositoryMock(t *testing.T) internal.RepositoryUser {
+func helperUserRepositoryMock(t *testing.T) *mocks.MockRepositoryUser {
 	t.Helper()
 	cnt := gomock.NewController(t)
 
@@ -327,7 +327,7 @@ func helperUserRepositoryMock(t *testing.T) internal.RepositoryUser {
 	return usrRep
 }
 
-func helperTransRepositoryMock(t *testing.T) internal.RepositoryTransaction {
+func helperTransRepositoryMock(t *testing.T) *mocks.MockRepositoryTransaction {
 	t.Helper()
 	cnt := gomock.NewController(t)
 	transRepo := mocks.NewMockRepositoryTransaction(cnt)
