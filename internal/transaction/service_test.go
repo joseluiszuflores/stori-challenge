@@ -3,13 +3,14 @@ package transaction
 import (
 	"context"
 	"fmt"
+	"testing"
+	"time"
+
 	"github.com/golang/glog"
 	"github.com/golang/mock/gomock"
 	"github.com/joseluiszuflores/stori-challenge/internal"
 	"github.com/joseluiszuflores/stori-challenge/internal/mocks"
 	"github.com/stretchr/testify/assert"
-	"testing"
-	"time"
 )
 
 func TestService_SeparatedDebitCredit(t *testing.T) {
