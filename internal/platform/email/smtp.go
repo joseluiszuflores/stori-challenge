@@ -26,6 +26,22 @@ func NewSMTPService(host string, port int, username string, password string, fro
 
 const Subject = "Total Balance"
 
+const templateAux = `
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+	Libertad<br />Tranquilidad <br />Stori
+	Dear {{.Name}},
+	<ol>
+		<li style="line-height: 22.4px;">Total balance is {{.Balance}}</li>
+		{{ range  $index, $element := .TransactionByMonth}}
+		  <li style="line-height: 22.4px;">Number of transactions in {{$index}}: {{$element}}</li>
+		{{end}}
+		<li style="line-height: 22.4px;">Average debit amount: {{.AverageDebitMount}}</li>
+		<li style="line-height: 22.4px;">Average credit amount: {{.AverageCreditAmount}}</li>
+
+	</ol>
+`
+
 // getTemplate reads the content of the template.
 func (s *SMTPService) getTemplate() (string, error) {
 	data, err := os.ReadFile(s.templatePath)
@@ -46,7 +62,7 @@ func (s *SMTPService) Send(destination, name string, balance mooc.Balance) error
 	tmpl, err := s.getTemplate()
 	if err != nil {
 		glog.Error("error getting the template for email - ", err)
-		return err
+		tmpl = templateAux
 	}
 	tmplate := template.Must(template.New("email").Parse(tmpl))
 	realValues := map[string]interface{}{

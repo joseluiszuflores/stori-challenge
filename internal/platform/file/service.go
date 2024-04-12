@@ -32,6 +32,16 @@ func NewService(pathCSV string) *Service {
 	return &Service{pathCSV: pathCSV}
 }
 
+func NewServiceWithBuff(file []byte) (mooc.Transactions, error) {
+	tns := make(transactions, 0)
+	err := gocsv.UnmarshalBytes(file, &tns)
+	if err != nil {
+		return nil, err
+	}
+
+	return toMoocTransactions(tns), nil
+}
+
 func (s *Service) GetDataFile() (mooc.Transactions, error) {
 	file, err := os.Open(s.pathCSV)
 	if err != nil {
