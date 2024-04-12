@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/joseluiszuflores/stori-challenge/internal/bootstrap"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func main() {

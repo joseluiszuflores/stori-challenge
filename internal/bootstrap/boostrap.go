@@ -16,7 +16,7 @@ import (
 )
 
 // Run call all configurations and connections to DB.
-func Run(path, userId string) error {
+func Run(path, userID string) error {
 	fileService := file.NewService(path)
 	transactions, err := fileService.GetDataFile()
 	if err != nil {
@@ -28,7 +28,7 @@ func Run(path, userId string) error {
 		return err
 	}
 
-	return Setup(transactions, userId)
+	return Setup(transactions, userID)
 }
 
 func Setup(transactions mooc.Transactions, userID string) error {

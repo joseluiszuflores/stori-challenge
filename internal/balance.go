@@ -86,5 +86,6 @@ func ToIntFromFile(val string) string {
 	if len(allName) < 1 {
 		return ""
 	}
+
 	return allName[0]
 }

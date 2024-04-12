@@ -24,6 +24,7 @@ func TestService_SeparatedDebitCredit(t *testing.T) {
 	timeForAny, err := time.Parse(time.DateOnly, "2024-07-24")
 	if err != nil {
 		assert.NoError(t, err)
+
 		return
 	}
 	debit = append(debit, internal.Transaction{
@@ -88,6 +89,7 @@ func TestService_MovementsByMonth(t *testing.T) {
 	timeForDebit, err := time.Parse(time.DateOnly, "2024-07-24")
 	if err != nil {
 		assert.NoError(t, err)
+
 		return
 	}
 	debit = append(debit, internal.Transaction{
